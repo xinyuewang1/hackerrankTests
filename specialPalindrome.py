@@ -31,8 +31,29 @@ from collections import Counter
 
 def substrCount (n, s):
     # sC = Counter(s)
-    for i in range(n):
+    # idea from discussion, it's "Compression" idea. Very neat.
+    if n != 0:
+        count = 1
+        tmp = s[0]
+        l = [[tmp, 1]]
 
+        for i in range(1, n):
+            if s[i] == tmp:
+                l[-1][1] += 1  # add one when it's the same char
+
+            else:
+                tmp = s[i]
+                l.append([tmp, 1])
+            count += l[-1][1]
+        # print(l)
+
+        for x in range(1, len(l)-1):
+            if l[x-1][0] == l[x+1][0] and l[x][1] == 1:
+                count += min(l[x-1][1], l[x+1][1])
+
+        return count
+    else:
+        return "Error"
 
 if __name__ == '__main__':
     # fptr = open(os.environ['OUTPUT_PATH'], 'w')
@@ -40,7 +61,7 @@ if __name__ == '__main__':
     # n = int(input())
     n = 5
     # s = input()
-    s = "asasd"
+    s = "aasasd"
     result = substrCount(n, s)
     print(result)
     # fptr.write(str(result) + '\n')
